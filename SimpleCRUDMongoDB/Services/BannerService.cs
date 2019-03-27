@@ -47,7 +47,5 @@ namespace SimpleCRUDMongoDB.Services
         {
             _banners.DeleteOne(b => b.Id == id);
         }
-
-
     }
 }

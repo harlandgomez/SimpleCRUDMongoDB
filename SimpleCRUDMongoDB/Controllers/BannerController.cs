@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc;
+using SimpleCRUDMongoDB.ExtensionMethods;
 using SimpleCRUDMongoDB.Models;
 using SimpleCRUDMongoDB.Services;
 
@@ -21,7 +25,7 @@ namespace SimpleCRUDMongoDB.Controllers
             return _bannerService.Get();
         }
 
-        [HttpGet("{id}", Name = "GetBanner")]
+        [HttpGet("{id}", Name = "Get")]
         public ActionResult<Banner> Get(int id)
         {
             var bannerFound = _bannerService.Get(id);
@@ -39,7 +43,7 @@ namespace SimpleCRUDMongoDB.Controllers
         {
             _bannerService.Create(banner);
 
-            return CreatedAtRoute("GetBanner", new { id = banner.Id}, banner);
+            return CreatedAtRoute("Get", new { id = banner.Id}, banner);
         }
 
         [HttpPut("{id}")]
@@ -70,6 +74,27 @@ namespace SimpleCRUDMongoDB.Controllers
             _bannerService.Remove(bannerFound.Id);
 
             return NoContent();
+        }
+
+        /// <summary>
+        /// Returns Html string of the Banner model, check if string is valid Html
+        /// </summary>
+        /// <param name="id">Banner Id</param>
+        /// <returns>Html</returns>
+        [HttpGet("GetBanner/{id}")]
+        public ActionResult<string> GetBanner(int id)
+        {
+            var bannerFound = _bannerService.Get(id);
+
+            if (bannerFound == null)
+            {
+                return NotFound();
+            }
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(bannerFound.Html);
+            var htmlBanner = doc.ParseErrors.Any() ? bannerFound.Html.ToBannerHtml() : bannerFound.Html;
+            return htmlBanner;
         }
     }
 }
