@@ -1,19 +1,15 @@
-﻿using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using SimpleCRUDMongoDB.Models;
 
 namespace SimpleCRUDMongoDB.Repository
 {
     public class SequenceRepository
     {
-        protected readonly IMongoDatabase _database;
-        protected readonly IMongoCollection<Sequence> _collection;
+        private readonly IMongoCollection<Sequence> _collection;
 
         public SequenceRepository(IMongoDatabase database)
         {
-            _database = database;
-            _collection = _database.GetCollection<Sequence>(typeof(Sequence).Name);
+            _collection = database.GetCollection<Sequence>(typeof(Sequence).Name);
         }
 
         public int GetSequenceValue(string sequenceName)
