@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Configuration;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using Newtonsoft.Json;
 using SimpleCRUDMongoDB.Models;
-using SimpleCRUDMongoDB.Repository;
-using Xunit;
 
 namespace SimpleCRUDMongoDB.IntegrationTests
 {
